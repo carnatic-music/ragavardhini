@@ -1,5 +1,5 @@
 (ns ^{:doc "Constants related to swara-sthanams"}
-    movertone.swarams
+    ragavardhini.swarams
   (:require [clojure.set :as set]))
 
 (def swarams->names

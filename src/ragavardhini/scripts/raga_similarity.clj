@@ -1,10 +1,10 @@
-(ns movertone.scripts.raga-similarity
+(ns ragavardhini.scripts.raga-similarity
   (:use [incanter core stats charts io datasets])
   (:require [overtone.core :as o]
             [clojure.string :as s]
-            [movertone.swarams :as sw]
-            [movertone.scripts.frequencies :as f]
-            [movertone.scripts.samples :as samples]))
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.scripts.frequencies :as f]
+            [ragavardhini.scripts.samples :as samples]))
 
 (defn nil-plus [n1 n2]
   (if (nil? n1)

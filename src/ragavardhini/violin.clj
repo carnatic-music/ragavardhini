@@ -1,4 +1,4 @@
-(ns movertone.violin
+(ns ragavardhini.violin
   (:use [overtone.live]))
 
 (defsynth violin

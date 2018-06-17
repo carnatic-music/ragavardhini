@@ -1,11 +1,11 @@
-(ns movertone.scripts.frequencies
+(ns ragavardhini.scripts.frequencies
   (:require [clojure.string :as s]
             [clojure.pprint :refer [pprint]]
             [medley.core :as m]
             [overtone.core :as o]
-            [movertone.swarams :as sw]
-            [movertone.scripts.dsp-adjustments :as adj]
-            [movertone.scripts.samples :as samples])
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.scripts.dsp-adjustments :as adj]
+            [ragavardhini.scripts.samples :as samples])
   (:import [java.util HashMap]))
 
 (defn with-dir-name [filename]

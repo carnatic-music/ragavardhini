@@ -1,9 +1,9 @@
-(ns movertone.html
+(ns ragavardhini.html
   (:use [hiccup.core]
         [hiccup.page])
   (:require [clojure.pprint :as pprint]
-            [movertone.swarams :as d]
-            [movertone.ragams :as r]
+            [ragavardhini.swarams :as d]
+            [ragavardhini.ragams :as r]
             [clojure.string :as s]))
 
 (defn ->printable [swarams & {:keys [bold?]}]

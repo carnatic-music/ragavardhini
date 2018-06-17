@@ -1,11 +1,11 @@
-(ns movertone.random
+(ns ragavardhini.random
   (:use overtone.core)
-  (:require [movertone.core-old :as c]
+  (:require [ragavardhini.core-old :as c]
             [overtone.live :as olive]
             [medley.core :as m]
-            [movertone.swarams :as sw]
-            [movertone.ragams :as r]
-            [movertone.scripts.frequencies :as f]))
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.scripts.frequencies :as f]))
 
 (defn adjacent-differences [nums]
   (loop [num-list nums

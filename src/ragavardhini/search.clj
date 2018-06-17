@@ -1,6 +1,6 @@
-(ns movertone.search
-  (:require [movertone.db :as db]
-            [movertone.ragams :as r]))
+(ns ragavardhini.search
+  (:require [ragavardhini.db :as db]
+            [ragavardhini.ragams :as r]))
 
 (defn db-ragam->ragam [db-ragam]
   (r/ragams (keyword (:name db-ragam))))

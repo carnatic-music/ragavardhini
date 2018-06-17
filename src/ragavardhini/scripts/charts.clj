@@ -1,10 +1,10 @@
-(ns movertone.scripts.charts
+(ns ragavardhini.scripts.charts
   (:use [incanter core stats charts io])
   (:require [overtone.core :as o]
             [clojure.string :as s]
-            [movertone.swarams :as sw]
-            [movertone.scripts.frequencies :as f]
-            [movertone.scripts.samples :as samples]))
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.scripts.frequencies :as f]
+            [ragavardhini.scripts.samples :as samples]))
 
 (defn melograph [filename]
   (let [freqs (f/freqs-from-file filename)

@@ -1,11 +1,11 @@
-(ns movertone.scripts.demo
+(ns ragavardhini.scripts.demo
   (:require [overtone.core :as o]
             [leipzig.live :as l]
-            [movertone.scripts.charts :as charts]
-            [movertone.scripts.frequencies :as f]
-            [movertone.random :as r]
-            [movertone.scripts.samples :as samples]
-            [movertone.tanpura :as tanpura]))
+            [ragavardhini.scripts.charts :as charts]
+            [ragavardhini.scripts.frequencies :as f]
+            [ragavardhini.random :as r]
+            [ragavardhini.scripts.samples :as samples]
+            [ragavardhini.tanpura :as tanpura]))
 
 (defn stop []
   (l/stop)

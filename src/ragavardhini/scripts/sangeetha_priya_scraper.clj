@@ -1,11 +1,11 @@
-(ns movertone.scripts.sangeetha-priya-scraper
+(ns ragavardhini.scripts.sangeetha-priya-scraper
   (:require [clj-http.client :as client]
             [clojure.java.io :as io]
             [clojure.pprint :as pp]
             [clojure.string :as s]
             [medley.core :as m]
-            [movertone.ragams :as r]
-            [movertone.scripts.util :as util]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.scripts.util :as util]
             [net.cgrand.enlive-html :as html]))
 
 (defn pretty-name [kriti-name]

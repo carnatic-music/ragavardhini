@@ -1,4 +1,4 @@
-(ns movertone.scripts.karnatic-scraper
+(ns ragavardhini.scripts.karnatic-scraper
   (:require [clojure.string :as s]
             [clojure.pprint :as pp]
             [clojure.edn :as edn]
@@ -6,9 +6,9 @@
             [medley.core :as m]
             [net.cgrand.enlive-html :as html]
             [clj-http.client :as client]
-            [movertone.scripts.util :as util]
-            [movertone.ragams :as r]
-            [movertone.search :as search]))
+            [ragavardhini.scripts.util :as util]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.search :as search]))
 
 (defn build-url [page]
   (str "http://www.karnatik.com/" page))

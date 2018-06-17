@@ -1,17 +1,17 @@
-(ns movertone.core-old
+(ns ragavardhini.core-old
   (:require [clojure.java.io :as io]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as s]
             [overtone.live :as olive]
             [overtone.inst.piano :as piano]
-            [movertone.violin :as violin]
+            [ragavardhini.violin :as violin]
             [leipzig.live :as llive]
             [leipzig.scale :as scale]
             [leipzig.melody :as melody]
-            [movertone.tanpura :as tanpura]
-            [movertone.swarams :as sw]
-            [movertone.search :as search]
-            [movertone.ragams :as r]))
+            [ragavardhini.tanpura :as tanpura]
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.search :as search]
+            [ragavardhini.ragams :as r]))
 
 
 (def shruthi :c)

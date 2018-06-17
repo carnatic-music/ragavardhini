@@ -1,6 +1,6 @@
-(ns movertone.beep
+(ns ragavardhini.beep
   (:use [overtone.core])
-  (:require [movertone.gamakams :as g]))
+  (:require [ragavardhini.gamakams :as g]))
 
 (defmacro g-inst [g-name g-env]
   `(definst ~g-name [~'f 260

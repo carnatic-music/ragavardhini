@@ -1,10 +1,10 @@
 (ns ^{:doc "Reads, parses ragams from file, and makes them accessible"}
-  movertone.ragams
+  ragavardhini.ragams
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.pprint :as pp]
             [medley.core :as m]
-            [movertone.db :as db]))
+            [ragavardhini.db :as db]))
 
 (defn read-file [filename]
   (-> filename io/resource slurp edn/read-string))

@@ -1,4 +1,4 @@
-(ns movertone.db
+(ns ragavardhini.db
   (:require [clojure.string :as str]
             [clojure.java.jdbc :as j]))
 

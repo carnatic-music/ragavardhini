@@ -1,18 +1,18 @@
-(ns movertone.pasr-player.clj
+(ns ragavardhini.pasr-player.clj
   (:use [overtone.core])
   (:require [clojure.java.io :as io]
             [clojure.string :as s]
             [overtone.live :as olive]
             [overtone.inst.piano :as piano]
-            [movertone.violin :as violin]
+            [ragavardhini.violin :as violin]
             [leipzig.live :as llive]
             [leipzig.scale :as scale]
             [leipzig.melody :as melody]
-            [movertone.pasr :as pasr]
-            [movertone.beep :as beep]
-            [movertone.swarams :as sw]
-            [movertone.ragams :as r]
-            [movertone.gamakams :as g]))
+            [ragavardhini.pasr :as pasr]
+            [ragavardhini.beep :as beep]
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.gamakams :as g]))
 
 (def shruthi :c)
 (def tempo 40)

@@ -1,4 +1,4 @@
-(ns movertone.flute
+(ns ragavardhini.flute
   (:use [overtone.core])
   (:require [clojure.string :as str]))
 

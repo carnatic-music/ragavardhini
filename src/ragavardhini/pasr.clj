@@ -1,11 +1,11 @@
-(ns movertone.pasr
+(ns ragavardhini.pasr
   (:use overtone.core)
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.string :as s]
             [clojure.pprint :as pp]
             [cheshire.core :as json]
-            [movertone.tanpura :as tanpura]))
+            [ragavardhini.tanpura :as tanpura]))
 
 (definst ignore-this [x 1]
   (def *mx *)

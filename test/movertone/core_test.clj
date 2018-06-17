@@ -1,6 +1,6 @@
-(ns movertone.core-test
+(ns ragavardhini.core-test
   (:require [clojure.test :refer :all]
-            [movertone.core :refer :all]))
+            [ragavardhini.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

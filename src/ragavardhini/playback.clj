@@ -1,13 +1,13 @@
-(ns movertone.playback
+(ns ragavardhini.playback
   (:use overtone.core)
-  (:require [movertone.tanpura :as tanpura]
-            [movertone.core-old :as c]
+  (:require [ragavardhini.tanpura :as tanpura]
+            [ragavardhini.core-old :as c]
             [overtone.live :as olive]
             [medley.core :as m]
-            [movertone.swarams :as sw]
-            [movertone.ragams :as r]
-            [movertone.scripts.frequencies :as f]
-            [movertone.random :as random-play]))
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.scripts.frequencies :as f]
+            [ragavardhini.random :as random-play]))
 
 (definst ignore-this [x 1]
   (def *mx *)

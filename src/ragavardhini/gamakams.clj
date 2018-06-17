@@ -1,4 +1,4 @@
-(ns movertone.gamakams
+(ns ragavardhini.gamakams
   (:use [overtone.core]))
 
 (defmacro m->h [note]

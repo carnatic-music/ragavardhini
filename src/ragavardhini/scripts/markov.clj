@@ -1,11 +1,11 @@
-(ns movertone.scripts.markov
-  (:require [movertone.scripts.frequencies :as f]
-            [movertone.scripts.samples :as samples]
+(ns ragavardhini.scripts.markov
+  (:require [ragavardhini.scripts.frequencies :as f]
+            [ragavardhini.scripts.samples :as samples]
             [markov-chains.core :as mc]
             [medley.core :as m]
-            [movertone.scripts.dsp-adjustments :as adj]
-            [movertone.scripts.demo :as demo]
-            [movertone.playback :as playback]))
+            [ragavardhini.scripts.dsp-adjustments :as adj]
+            [ragavardhini.scripts.demo :as demo]
+            [ragavardhini.playback :as playback]))
 
 (defn rs []
   (overtone.core/recording-stop))
@@ -68,6 +68,6 @@
              {nth-order (mc/collate kalyani-swarams nth-order)})
            (range 2 21))))
 
-  (movertone.tanpura/play 60 0.2)
+  (ragavardhini.tanpura/play 60 0.2)
   (play-collated :kalyani kalyani-swarams 2 20 30)
   (play-collated :kalyani kalyani-swarams 10 30 100))

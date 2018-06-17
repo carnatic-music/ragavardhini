@@ -1,4 +1,4 @@
-(ns movertone.scripts.dsp-adjustments
+(ns ragavardhini.scripts.dsp-adjustments
   (:require [overtone.core :as o]))
 
 (def default-tonic-prominence 0.8)

@@ -1,18 +1,18 @@
-(ns movertone.core
+(ns ragavardhini.core
   (:use [overtone.core])
   (:require [clojure.java.io :as io]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as s]
             [overtone.live :as olive]
             [overtone.inst.piano :as piano]
-            [movertone.violin :as violin]
+            [ragavardhini.violin :as violin]
             [leipzig.live :as llive]
             [leipzig.scale :as scale]
             [leipzig.melody :as melody]
-            [movertone.beep :as beep]
-            [movertone.swarams :as sw]
-            [movertone.ragams :as r]
-            [movertone.gamakams :as g]))
+            [ragavardhini.beep :as beep]
+            [ragavardhini.swarams :as sw]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.gamakams :as g]))
 
 (def shruthi :c)
 (def tempo 40)
@@ -118,7 +118,7 @@
                    1))
 
   (play-phrase
-   (string->phrase (:ragam (movertone.search/search-ragam "gaula"))
+   (string->phrase (:ragam (ragavardhini.search/search-ragam "gaula"))
                    "^g, ^r, ^s ^r ^g ^r -s,"
                    1))
 

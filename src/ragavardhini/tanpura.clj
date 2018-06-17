@@ -1,4 +1,4 @@
-(ns movertone.tanpura
+(ns ragavardhini.tanpura
   (:use overtone.core))
 
 (defn play [note amp]

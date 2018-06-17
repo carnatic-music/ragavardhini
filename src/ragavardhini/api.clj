@@ -1,13 +1,13 @@
-(ns movertone.api
+(ns ragavardhini.api
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.params :as params]
             [cider.nrepl :as cider]
             [clojure.tools.nrepl.server :as nrepl]
             [cheshire.core :as json]
             [bidi.ring :as br]
-            [movertone.html :as p]
-            [movertone.ragams :as r]
-            [movertone.search :as s]))
+            [ragavardhini.html :as p]
+            [ragavardhini.ragams :as r]
+            [ragavardhini.search :as s]))
 
 (defn html-response [html]
   {:status 200
