@@ -1,0 +1,67 @@
+* laya, tala
+> geetam vaadyam tatha nrittam yatastaalepratishthitam
+root: tala = base
+
+tala = kala
+derived from poetic meter rather than dance
+
+
+** tala systems
+- chanda tala system (108)
+- chapu talas (4)
+- suladi sapta tala system (175)
+- hindustani tala systems
+
+** avartana
+- avarta, or avartana = 1 cycle
+- aavritti = recurrence
+- signifies number of beats in 1 cycle
+- simhanandana tala: 128 beats per cycle
+- sharaba nandana tala: 79 beats per cycle
+
+*** avartana anga
+sama = 1st beat of the cycle
+graha = beat of the cycle at which composition starts
+sama graha, anagata graha, atita graha
+arudhi = mid point of the tala cycle, accented
+
+*** matra, akshara
+matra = beat in a cycle
+akshara = sub-divisions in a beat
+akshara = can't be destroyed
+
+** tala kriya
+sassabda, nissabda
+
+*** tala angas
+laghu (I), dhrutam (O), anudhrutam (U)
+
+** suladi sapta (7) tala
+|-----------+---------|
+| tala name | kriya   |
+|-----------+---------|
+| dhruva    | I O I I |
+| matya     | I O I   |
+| rupaka    | O I     |
+| triputa   | I O O   |
+| jhampa    | I U O   |
+| ata       | I I O O |
+| eka       | I       |
+|-----------+---------|
+
+*** jathi (5), gati (5)
+gati = gait
+|-----------+---|
+| chatushra | 4 |
+| tisra     | 3 |
+| khanda    | 5 |
+| mishra    | 7 |
+| sankeerna | 9 |
+|-----------+---|
+
+
+** common talas
+| adi tala          | chatushra jati triupta tala |
+| rupaka tala       | chatushra jati rupaka tala  |
+| mishra chapu tala | tisra jati triputa tala     |
+| khanda chapu tala | tira jati rupaka tala       |

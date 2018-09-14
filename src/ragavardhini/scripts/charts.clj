@@ -19,6 +19,19 @@
               :width 1200
               :height 300))))
 
+(defn swaram-melograph [swarams title]
+  (let [midis (map #(sw/swaram->midi :c %) swarams)
+        [min-y max-y] ((juxt first last) (sort midis))]
+    (-> (xy-plot (range (count midis))
+                 midis
+                 :title (str "swaram melograph for " title)
+                 :x-label "time (ms)")
+        (set-y-range (- min-y 5) (+ max-y 5))
+        (set-theme :default)
+        (save (str title "-" (System/currentTimeMillis) "-melograph.png")
+              :width 1200
+              :height 300))))
+
 (defn pitch-histogram [filename & [plot-axis]]
   (let [freqs (f/freqs-from-file filename)
         midis (map o/hz->midi freqs)

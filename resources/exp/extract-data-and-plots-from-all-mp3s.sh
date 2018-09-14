@@ -20,3 +20,5 @@ rm "$i.wav"
 # Get frequencies data from pitch
 echo "Extracting frequency data.."
 tail -n +12 $"$i.wav.pitch" | grep -A6 "frame" | grep -ve "--" | grep "frequency" | grep -ve "--" | grep -oE "[0-9\.]+" > "$i.wav.pitch.frequencies"
+
+rm "$i.wav.pitch"

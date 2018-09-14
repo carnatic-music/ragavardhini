@@ -4,7 +4,6 @@
             [clojure.pprint :refer [pprint]]
             [clojure.string :as s]
             [overtone.live :as olive]
-            [overtone.inst.piano :as piano]
             [ragavardhini.violin :as violin]
             [leipzig.live :as llive]
             [leipzig.scale :as scale]
@@ -43,13 +42,13 @@
 
 (defn phrase
   ([ragam swarams durations speed]
-     (phrase (map #(simple-swaram->actual-swaram ragam %) swarams) durations speed))
+   (phrase (map #(simple-swaram->actual-swaram ragam %) swarams) durations speed))
   ([swarams durations speed]
-     (let [triplets (make-triplets swarams)
-           durations (or durations
-                         (default-durations (count swarams)))]
-       (melody/phrase (map #(/ % (* speed jathi)) durations)
-                      triplets))))
+   (let [triplets (make-triplets swarams)
+         durations (or durations
+                       (default-durations (count swarams)))]
+     (melody/phrase (map #(/ % (* speed jathi)) durations)
+                    triplets))))
 
 (defmethod llive/play-note :default [{{{:keys [pre cur nex]} :swarams} :pitch seconds :duration}]
   (let [get-midi #(some->> % :swaram )

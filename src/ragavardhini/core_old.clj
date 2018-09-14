@@ -14,9 +14,9 @@
             [ragavardhini.ragams :as r]))
 
 
-(def shruthi :c)
+(def shruthi :.b)
 
-(def tempo 80)
+(def tempo 84)
 
 (def jathis
   {:chaturasra	4
@@ -33,7 +33,7 @@
 
 (olive/definst beep [freq 440 dur 1.0]
   (-> freq
-      olive/saw
+      olive/sin-osc
       (* (olive/env-gen (olive/perc 0.05 dur) :action olive/FREE))))
 
 (defn default-durations [num-swarams]
@@ -54,7 +54,7 @@
 
 (defmethod llive/play-note :default [{midi :pitch seconds :duration}]
   (let [freq (olive/midi->hz midi)]
-    (beep freq seconds)))
+    (piano/piano midi 1 100 0.1 0.1 0.5 0.5 0.5 0.5 0.5 0.1 0.5 0.1 0.1 0)))
 
 (defn play-phrase [phrase]
   (->> phrase

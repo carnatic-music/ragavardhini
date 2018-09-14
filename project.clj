@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [overtone "0.9.1"]
+                 [overtone "0.10.3"]
                  [leipzig "0.8.1"]
                  [org.clojure/java.jdbc "0.3.7"]
                  [postgresql/postgresql "9.3-1101.jdbc4"]
@@ -21,7 +21,7 @@
                  [ring/ring-jetty-adapter "1.3.2"]
                  [ring-middleware-format "0.3.2" :exclusions [ring]]
                  [rm-hull/markov-chains "0.0.1"]]
-  :plugins [[cider/cider-nrepl "0.8.2"]]
+  :plugins [[cider/cider-nrepl "0.18.0-SNAPSHOT"]]
   :jvm-opts ["-Xms4g" "-Xmx4g"
              "-Dcom.sun.management.jmxremote=true"
              "-Dcom.sun.management.jmxremote.port=12345"
