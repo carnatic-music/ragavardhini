@@ -1,55 +1,102 @@
 (ns ragavardhini.transcribe
   (:use overtone.core)
-  (:require [ragavardhini.tanpura :as tanpura]
+  (:require [clojure.string :as string]
+            [ragavardhini.tanpura :as tanpura]
             [ragavardhini.core-old :as c]
             [overtone.live :as olive]
             [medley.core :as m]
             [ragavardhini.swarams :as sw]
             [ragavardhini.ragams :as r]
+            [ragavardhini.playback :as playback]
+            [ragavardhini.scripts.samples :as samples]
             [ragavardhini.scripts.frequencies :as f]
             [ragavardhini.random :as random-play]
             [ragavardhini.layam :as layam]))
 
-(defn roughly-transcribe [file]
-  (let [swarams (f/freqs->swarams (f/freqs-from-file file))
-        threshold 40]
-    (->> (partition-by identity swarams)
+(defn convert-to-swarams [file]
+  (->> file
+       f/freqs-from-file
+       f/freqs->swarams
+       (remove nil?)))
+
+(defn roughly-transcribe
+  "[DEPRECATED] Given a file, transcribe the swarams independent of
+  the bpm. The threshold removes infrequently ocurring swarams that
+  might be the errors in autocorrelation."
+  [file threshold]
+  (let [threshold (or threshold 40)]
+    (->> (convert-to-swarams file)
+         (partition-by identity)
          (map (fn [sws] {:swaram (first sws) :count (count sws)}))
          (filter #(> (:count %) threshold)))))
 
-(defn mode [coll]
-  (ffirst (sort-by second > (frequencies coll))))
+(defn plausible-swaram? [swaram]
+  (let [shruti-midi (sw/shruthis :c)
+        swaram-midi (sw/swaram->midi :c swaram)]
+    (< (- shruti-midi 14)
+       swaram-midi
+       (+ shruti-midi 14))))
 
-(defn swaram-buckets [swarams bucket-size]
-  (let [midis          (map #(sw/swaram->midi :c %) swarams)
-        [min-s max-s]  ((juxt first last) (sort midis))
-        lower-cutoff-s (- max-s 24)]
-    (->> (partition-by identity midis)
-         (filter #(> (count %) (/ bucket-size 2))) ;; remove infrequent outliers
-         (filter #(> (first %) lower-cutoff-s)) ;; remove low outliers
-         (flatten)
-         (partition-by identity)
-         (map (fn [ms] {:swaram (sw/midi->swaram (first ms) 60)
-                        :count (count ms)})))))
+(defn remove-outliers [swarams akshara-length]
+  (->> (partition-by identity swarams)
+       (filter #(> (count %) (/ akshara-length 2))) ;; remove infrequent outliers
+       (filter #(plausible-swaram? (first %))) ;; remove unnatural swarams
+       (flatten)))
 
-(defn bpm-transcribe [file bpm gati offset]
-  (let [swaram-dps (drop offset (remove nil? (f/freqs->swarams (f/freqs-from-file file))))
-        beats-per-second (/ bpm 60)
-        dps-per-beat (/ 300 beats-per-second)
-        bucket-size (Math/round (float (/ dps-per-beat gati)))]
-    (prn :swaram-dps-count (count swaram-dps)
-         :dps-per-beat (float dps-per-beat)
-         :bucket-size bucket-size)
-    (->> (swaram-buckets swaram-dps bucket-size)
-         (mapcat (fn [{:keys [swaram count]}]
-                   (repeat (Math/round (float (/ count bucket-size))) swaram))))))
+(defn duration [swarams akshara-length]
+  (->> (/ (count swarams) akshara-length)
+       float
+       Math/round))
 
-(defn play-bpm-transcribed [file bpm gati offset]
-  (let [phrase (bpm-transcribe file bpm gati offset)]
-    (c/play-phrase (c/phrase phrase (repeat (count phrase) 1) (/ gati 2)))))
+(defn swaram-buckets
+  "Given an akshara length, compute the swarams and their durations."
+  [swarams akshara-length]
+  (->> (remove-outliers swarams akshara-length)
+       (partition-by identity)
+       (map (fn [ms] {:swaram   (first ms)
+                      :duration (duration ms akshara-length)}))))
+
+(def akshara-length
+  "Roughly equals the number of data points for a single akshara"
+  (memoize
+   (fn [bpm gati]
+     (let [matras-per-second (/ bpm 60)
+           dps-per-matra     (/ 200 matras-per-second)
+           dps-per-akshara   (/ dps-per-matra gati)]
+       (Math/round (float dps-per-akshara))))))
+
+(defn bpm-transcribe
+  [{:keys [bpm gati offset file]
+    :or   {bpm 80 gati 4 offset 0}
+    :as input-file}]
+  (when (nil? file) (throw (ex-info "No file given" input-file)))
+  (let [swaram-dps (drop offset (convert-to-swarams file))]
+    (->> (swaram-buckets swaram-dps (akshara-length bpm gati))
+         (mapcat (fn [{:keys [swaram duration]}] (repeat duration swaram))))))
+
+(def prescriptive-swarams
+  {:.g1 :.r2
+   :g1 :r2
+   :.n1 :.d2
+   :n1 :d2})
+
+(defn prescriptive-notation [swarams num-in-line]
+  (->> swarams
+       (map #(get prescriptive-swarams % %))
+       sw/actual-swarams->simple-swarams
+       (partition-by identity)
+       (mapcat (fn [sws] (cons (name (first sws)) (repeat (dec (count sws)) ","))))
+       (clojure.string/join " ")
+       (partition (* 2 num-in-line))
+       (map #(apply str %))
+       (clojure.pprint/pprint)))
 
 (comment
-  (do (play-bpm-transcribed "moh-varsha-2.mp3.wav.pitch.frequencies" 87 2 60)
-      (layam/play-avartanams 87 2 (cycle [(:sarvalaghu layam/sequences)])))
+  (do
+    (let [ts (bpm-transcribe (first samples/research-files))]
+      (prescriptive-notation ts 16)
+      (playback/play-bpm-transcribed ts 4)
+      #_(playback/continuous (take 400 ts) 4))
+    (layam/play-avartanams 87 2 (cycle [(:sarvalaghu layam/sequences)])))
 
   )

@@ -1,6 +1,7 @@
 (ns ^{:doc "Constants related to swara-sthanams"}
     ragavardhini.swarams
-  (:require [clojure.set :as set]))
+  (:require [clojure.set :as set]
+            [clojure.string :as string]))
 
 (def swarams->names
   {:s  "Shadjamam"
@@ -87,8 +88,11 @@
   (let [shadjam (shruthi shruthis)]
     (+ shadjam rel-num)))
 
+(defn simple-swaram [swaram]
+  (keyword(string/replace (name swaram) #"\d*" "")))
+
 (defn actual-swarams->simple-swarams [swarams]
-  (map #(->> % name first str keyword) swarams))
+  (map simple-swaram swarams))
 
 (defn madhya-swarams-in-ragam [{:keys [arohanam avarohanam]}]
   (let [swarams (concat arohanam avarohanam)]

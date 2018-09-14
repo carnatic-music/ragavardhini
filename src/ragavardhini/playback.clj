@@ -11,6 +11,11 @@
             [ragavardhini.random :as random-play]
             [ragavardhini.layam :as layam]))
 
+(defn play-bpm-transcribed [phrase gati]
+  (c/play-phrase (c/phrase phrase
+                           (repeat (count phrase) 1)
+                           (/ gati 2))))
+
 (definst ignore-this [x 1]
   (def *mx *)
   (sin-osc))

@@ -37,3 +37,9 @@
    {:file "mOhanam-VR-Dileepkumar-dayarAni_dayarAni_dAsharathi-tyAgarAja28.mpeg.wav.pitch.frequencies"
     :bpm 147
     :offset 0}])
+
+(def research-files
+  [{:file "moh-varsha-2.mp3.wav.pitch.frequencies"
+    :bpm 80
+    :gati 4
+    :offset 60}])
