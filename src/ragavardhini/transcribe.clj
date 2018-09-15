@@ -50,13 +50,13 @@
 
 (defn swaram-buckets
   "Given an akshara length, compute the swarams and their durations."
-  [swarams akshara-length]
-  (->> (remove-outliers swarams akshara-length)
+  [akshara-length swarams]
+  (->> swarams
        (partition-by identity)
-       (map (fn [ms] {:swaram   (first ms)
-                      :duration (duration ms akshara-length)}))))
+       (pmap (fn [ms] {:swaram   (first ms)
+                       :duration (duration ms akshara-length)}))))
 
-(def akshara-length
+(def get-akshara-length
   "Roughly equals the number of data points for a single akshara"
   (memoize
    (fn [bpm gati]
@@ -66,13 +66,23 @@
        (Math/round (float dps-per-akshara))))))
 
 (defn bpm-transcribe
-  [{:keys [bpm gati offset file]
-    :or   {bpm 80 gati 4 offset 0}
+  [{:keys [bpm offset file]
+    :or   {bpm 80 offset 0}
     :as input-file}]
   (when (nil? file) (throw (ex-info "No file given" input-file)))
   (let [swaram-dps (drop offset (convert-to-swarams file))]
-    (->> (swaram-buckets swaram-dps (akshara-length bpm gati))
-         (mapcat (fn [{:keys [swaram duration]}] (repeat duration swaram))))))
+    (->>
+     (for [gati [1 2 4 8]
+           :let [akshara-length (get-akshara-length bpm gati)]]
+       [gati
+        (->> (remove-outliers swaram-dps akshara-length)
+             (swaram-buckets akshara-length)
+             (mapcat (fn [{:keys [swaram duration]}] (repeat duration swaram))))])
+     (into {}))))
+
+(defn bpm-transcribe-files
+  [files]
+  (doall (apply merge-with concat (pmap bpm-transcribe files))))
 
 (def prescriptive-swarams
   {:.g1 :.r2
@@ -94,8 +104,8 @@
 (comment
   (do
     (let [ts (bpm-transcribe (first samples/research-files))]
-      (prescriptive-notation ts 16)
-      (playback/play-bpm-transcribed ts 4)
+      (prescriptive-notation (get ts 2) 16)
+      (playback/play-bpm-transcribed (get ts 4) 4)
       #_(playback/continuous (take 400 ts) 4))
     (layam/play-avartanams 87 2 (cycle [(:sarvalaghu layam/sequences)])))
 
