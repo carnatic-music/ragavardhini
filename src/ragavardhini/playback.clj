@@ -63,9 +63,8 @@
                               (mapv midi->hz))
         durations        (vec (repeat playable-num (/ 1 gati)))
         pitch-env        (envelope freqs durations
-                                   (->> (repeat (dec (/ gati 2)) :welch)
-                                        (cons :step))
-                                   )]
+                                   (->> (repeat (dec (/ gati 4)) :welch)
+                                        (cons :step)))]
     (play-in-carnatic-style pitch-env
                             (amp-env total-duration)
                             total-duration)))
@@ -140,6 +139,10 @@
                             (map #(make-phrase % gati bpm)))]
     (doseq [phrase phrases]
       (play-phrase phrase))))
+
+(defn sarvalaghu [bpm gati]
+  (layam/play-avartanams bpm gati
+   (cycle [(:sarvalaghu layam/sequences)])))
 
 (defn foo [file]
   (let [sample-nth 2
