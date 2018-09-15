@@ -28,7 +28,7 @@
                  :x-label "time (ms)")
         (set-y-range (- min-y 5) (+ max-y 5))
         (set-theme :default)
-        (save (str title "-" (System/currentTimeMillis) "-melograph.png")
+        (save (str "resources/charts/" title "-" (System/currentTimeMillis) "-melograph.png")
               :width 1200
               :height 300))))
 
