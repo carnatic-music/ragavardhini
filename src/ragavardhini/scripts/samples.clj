@@ -43,3 +43,7 @@
     :bpm 80
     :gati 4
     :offset 60}])
+
+(def revati-files [])
+(def kalyani-files [])
+(def pancharatna-kritis [])

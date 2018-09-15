@@ -10,14 +10,6 @@
         io/file
         html/html-resource)))
 
-(defn n-ads [n coll]
-  (loop [c coll
-         acc []]
-    (if (< (count c) n)
-      acc
-      (recur (drop 1 c)
-             (conj acc (take n c))))))
-
 (defn ->perc-histogram [hist]
   (let [total (reduce + (vals hist))]
     (m/map-vals #(* 100.0 (/ % total))
@@ -33,3 +25,8 @@
   (apply str
          (for [[k v] props]
            (str "-" k "-" v))))
+
+(defn ensure-seq [x]
+  (if (seq? x)
+    x
+    [x]))

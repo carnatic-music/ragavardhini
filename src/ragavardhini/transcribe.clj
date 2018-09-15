@@ -85,10 +85,10 @@
   (doall (apply merge-with concat (pmap bpm-transcribe files))))
 
 (def prescriptive-swarams
-  {:.g1 :.r2
-   :g1 :r2
+  {:g1  :r2
+   :n1  :d2
    :.n1 :.d2
-   :n1 :d2})
+   :.g1 :.r2})
 
 (defn prescriptive-notation [swarams num-in-line]
   (->> swarams

@@ -42,21 +42,26 @@
     (take (* playback-gati duration-seconds)
           (mc/generate (repeat order :.s) collated-swarams))))
 
-(def fill-in-probabilities
-  (memoize
-   (fn [swarams level]
-     (->> (u/n-ads 9 swarams)
+(defn fill-in-probabilities
+  [transcribed-swarams generation-gati]
+  (let [swarams (get transcribed-swarams generation-gati)]
+    (doall
+     (->> (partition (+ 1 generation-gati) 1 swarams)
           (pmap (fn [ad] {[(first ad) (last ad)] (butlast (drop 1 ad))}))
           (apply merge-with conj)
           (m/map-vals frequencies)))))
 
 (defn with-alankara-swarams
-  [varna-swarams
-   {:keys [level order generation-gati] :as varna-params}]
-  (let [duads (u/n-ads 2 varna-swarams)
-        probs (fill-in-probabilities (get mohanam-swarams-with-gati 8) level)]
-    (mapcat (fn [[fs ls :as duad]] (cons fs (mc/select (get probs duad))))
-            duads)))
+  ([transcribed-swarams props]
+   (with-alankara-swarams
+     transcribed-swarams (generate-swarams transcribed-swarams props) props))
+  ([transcribed-swarams varna-swarams {:keys [generation-gati] :as props}]
+   (let [duads (partition 2 1 varna-swarams)
+         probs (fill-in-probabilities transcribed-swarams (* 2 generation-gati))]
+     (mapcat
+      (fn [[fs ls :as duad]]
+        (cons fs (u/ensure-seq (mc/select (get probs duad)))))
+      duads))))
 
 (defn play
   [generated-swarams {:keys [order duration-seconds playback-gati mode bpm] :as props}]
@@ -98,4 +103,20 @@
                    :playback-gati 8
                    :generation-gati 4
                    :mode :continuous
-                   :bpm 80}))
+                   :bpm 80})
+
+  (let [props {:order 12
+               :duration-seconds 30
+               :playback-gati 2
+               :generation-gati 2
+               :mode :continuous
+               :bpm 80}
+        generated-swarams (generate-swarams mohanam-swarams props)
+        as-props (assoc props :playback-gati 8)
+        as (with-alankara-swarams mohanam-swarams generated-swarams props)]
+    (prn "===generated swarams===")
+    (transcribe/prescriptive-notation generated-swarams 16)
+    (play as as-props)
+    (charts/swaram-melograph as (u/props-str as-props))
+    (prn "===with alankara swarams===")
+    (transcribe/prescriptive-notation as 16)))
