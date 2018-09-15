@@ -37,6 +37,20 @@
        swaram-midi
        (+ shruti-midi 14))))
 
+(defn remove-octave-shifts [aksharas]
+  (let [threshold-midis 9
+        shruti-midi (sw/shruthis :c)
+        [s1 s2 s3 :as aks] (take 3 aksharas)
+        [m1 m2 m3] (map #(sw/swaram->midi :c (or (:swaram %) %)) aks)]
+    (if (< (count aksharas) 3)
+      aksharas
+      (if (or (and (>= (- m1 m2) threshold-midis)
+                   (>= (- m3 m2) threshold-midis))
+              (and (>= (- m2 m1) threshold-midis)
+                   (>= (- m2 m3) threshold-midis)))
+        (into [s1 s3] (remove-octave-shifts (drop 3 aksharas)))
+        (into [s1 s2 s3] (remove-octave-shifts (drop 3 aksharas)))))))
+
 (defn remove-outliers [swarams akshara-length]
   (->> (partition-by identity swarams)
        (filter #(> (count %) (/ akshara-length 2))) ;; remove infrequent outliers
@@ -77,6 +91,7 @@
        [gati
         (->> (remove-outliers swaram-dps akshara-length)
              (swaram-buckets akshara-length)
+             (remove-octave-shifts)
              (mapcat (fn [{:keys [swaram duration]}] (repeat duration swaram))))])
      (into {}))))
 

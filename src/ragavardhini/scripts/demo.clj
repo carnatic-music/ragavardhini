@@ -1,11 +1,20 @@
 (ns ragavardhini.scripts.demo
-  (:require [overtone.core :as o]
-            [leipzig.live :as l]
-            [ragavardhini.scripts.charts :as charts]
-            [ragavardhini.scripts.frequencies :as f]
+  (:require [leipzig.live :as l]
+            [markov-chains.core :as mc]
+            [medley.core :as m]
+            [ragavardhini.playback :as playback]
             [ragavardhini.random :as r]
+            [ragavardhini.recording :as record]
+            [ragavardhini.scripts.charts :as charts]
+            [ragavardhini.scripts.demo :as demo]
+            [ragavardhini.scripts.dsp-adjustments :as adj]
+            [ragavardhini.scripts.frequencies :as f]
+            [ragavardhini.scripts.markov :as mar]
             [ragavardhini.scripts.samples :as samples]
-            [ragavardhini.tanpura :as tanpura]))
+            [ragavardhini.scripts.util :as u]
+            [ragavardhini.tanpura :as tanpura]
+            [ragavardhini.transcribe :as transcribe]
+            [overtone.core :as o]))
 
 (defn stop []
   (l/stop)
@@ -77,3 +86,60 @@
    (def endaro-probs
      (f/two-swaram-probabilities [(nth samples/pancharatna-kritis 4)]
                                  :tonic-prominence 0.4 :npr-factor 0.25))))
+
+;;=================================
+;; Markov demonstrations
+(comment
+
+  ;; transcribe mohanam swarams
+  (def mohanam-swarams
+    (doall
+     (transcribe/bpm-transcribe-files samples/mohanam-files)))
+
+  ;; discrete at gati 2
+  (mar/generate-and-play mohanam-swarams
+                         {:order            12
+                          :duration-seconds 100
+                          :playback-gati    2
+                          :generation-gati  2
+                          :mode             :discreet
+                          :bpm              80})
+
+  ;; continuous at gati 4
+  (mar/graph-and-play mohanam-swarams
+                      {:order            24
+                       :duration-seconds 100
+                       :playback-gati    8
+                       :generation-gati  4
+                       :mode             :continuous
+                       :bpm              80})
+
+  ;; with alankaras filled in
+  (let [props             {:order            12
+                           :duration-seconds 30
+                           :playback-gati    2
+                           :generation-gati  2
+                           :mode             :continuous
+                           :bpm              80}
+        generated-swarams (mar/generate-swarams mohanam-swarams props)
+        as-props          (assoc props :playback-gati 8)
+        as                (mar/with-alankara-swarams mohanam-swarams generated-swarams props)]
+    (prn "===generated swarams===")
+    (transcribe/prescriptive-notation generated-swarams 16)
+    (mar/play as as-props)
+    (charts/swaram-melograph as (u/props-str as-props))
+    (prn "===with alankara swarams===")
+    (transcribe/prescriptive-notation as 16))
+
+  ;; discrete, with repetitions
+  (let [props {:order            12
+               :duration-seconds 50
+               :playback-gati    2
+               :generation-gati  2
+               :mode             :discreet
+               :bpm              80}
+        generated-swarams (mar/generate-swarams mohanam-swarams props)
+        rs (ragavardhini.scripts.repetitions/repeat-avartanas generated-swarams props)]
+    (transcribe/prescriptive-notation rs 16)
+    (mar/play generated-swarams props)
+    (charts/swaram-melograph generated-swarams (u/props-str props))))

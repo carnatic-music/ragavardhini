@@ -53,7 +53,7 @@
                             (amp-env total-duration)
                             total-duration)))
 
-(defn continuous [swarams gati]
+(defn continuous [swarams gati bpm]
   (let [total-num        (count swarams)
         playable-swarams swarams
         playable-num     (count playable-swarams)
@@ -61,8 +61,9 @@
         freqs            (->> playable-swarams
                               (mapv (partial sw/swaram->midi :.b))
                               (mapv midi->hz))
-        durations        (vec (repeat playable-num (/ 1 gati)))
+        durations        (vec (repeat playable-num (/ 10 (* 0.1 bpm gati))))
         pitch-env        (envelope freqs durations
+                                   #_:welch
                                    (->> (repeat (dec (/ gati 4)) :welch)
                                         (cons :step)))]
     (play-in-carnatic-style pitch-env
@@ -71,9 +72,9 @@
 
 (defn bpm-play-discreet [swarams gati _]
   (let [phrase (->> (partition-by identity swarams)
-                    (map (fn [sws] {:swaram (first sws) :count (count sws)})))
+                    (map (fn [sws] {:swaram (first sws) :duration (count sws)})))
         continuous-swarams (map :swaram phrase)
-        continuous-durations (map :count phrase)]
+        continuous-durations (map :duration phrase)]
     (c/play-phrase (c/phrase continuous-swarams
                              continuous-durations
                              (/ gati 2)))))

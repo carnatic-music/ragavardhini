@@ -33,14 +33,17 @@
    form))
 
 (defn generate-swarams
-  [transcribed-swarams {:keys [order duration-seconds generation-gati playback-gati]}]
+  [transcribed-swarams {:keys [order duration-seconds generation-gati playback-gati
+                               init-swarams]}]
   (let [swarams          (get transcribed-swarams generation-gati)
         playable-swarams (remove-non-prominent-swarams swarams 0.4)
         collated-swarams (reduce-tonic-prominence
                           (mc/collate playable-swarams order)
-                          0.6)]
-    (take (* playback-gati duration-seconds)
-          (mc/generate (repeat order :.s) collated-swarams))))
+                          0.5)]
+    (->> collated-swarams
+         (mc/generate (or init-swarams (repeat order :.s)))
+         (take (* playback-gati duration-seconds))
+         (transcribe/remove-octave-shifts))))
 
 (defn fill-in-probabilities
   [transcribed-swarams generation-gati]
@@ -69,7 +72,7 @@
     (record/stop)
     (record/start props)
     (case mode
-      :continuous (playback/continuous generated-swarams playback-gati)
+      :continuous (playback/continuous generated-swarams playback-gati bpm)
       :discreet   (playback/bpm-play-discreet generated-swarams playback-gati bpm))
     (catch Exception e
       (prn e)
@@ -83,40 +86,3 @@
   (let [generated-swarams (generate-swarams transcribed-swarams props)]
     (charts/swaram-melograph generated-swarams (u/props-str props))
     (play generated-swarams props)))
-
-(comment
-  (def mohanam-swarams
-    (doall
-     (transcribe/bpm-transcribe-files samples/mohanam-files)))
-
-  (generate-and-play mohanam-swarams
-                     {:order 12
-                      :duration-seconds 100
-                      :playback-gati 2
-                      :generation-gati 2
-                      :mode :discreet
-                      :bpm 80})
-
-  (graph-and-play mohanam-swarams
-                  {:order 24
-                   :duration-seconds 100
-                   :playback-gati 8
-                   :generation-gati 4
-                   :mode :continuous
-                   :bpm 80})
-
-  (let [props {:order 12
-               :duration-seconds 30
-               :playback-gati 2
-               :generation-gati 2
-               :mode :continuous
-               :bpm 80}
-        generated-swarams (generate-swarams mohanam-swarams props)
-        as-props (assoc props :playback-gati 8)
-        as (with-alankara-swarams mohanam-swarams generated-swarams props)]
-    (prn "===generated swarams===")
-    (transcribe/prescriptive-notation generated-swarams 16)
-    (play as as-props)
-    (charts/swaram-melograph as (u/props-str as-props))
-    (prn "===with alankara swarams===")
-    (transcribe/prescriptive-notation as 16)))
