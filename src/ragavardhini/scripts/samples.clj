@@ -44,6 +44,14 @@
     :gati 4
     :offset 60}])
 
-(def revati-files [])
+(def revati-files
+  [{:file "rEvati-Aruna-Sairam-mahAdEva_shiva_shambhO-tanjAvUr_sankara_iyer25.mpeg.wav.pitch.frequencies"}
+   {:file "rEvati-Chinmaya-Sisters---Uma,Radhika-mahAdEva_shiva_shambhO-tanjAvUr_sankara_iyer81.mpeg.wav.pitch.frequencies"}
+   {:file "rEvati-DK-Jayaraman-tillAnA-lAlgudi_jayarAman53.mpeg.wav.pitch.frequencies"}
+   {:file "rEvati-Mambalam-Sisters-tillAnA-lAlgudi_jayarAman80.mpeg.wav.pitch.frequencies"}
+   {:file "rEvati-Mohan-Santhanam-tillAnA-lAlgudi_jayarAman44.mpeg.wav.pitch.frequencies"}
+   {:file "rEvati-Niranjana-Srinivasan-mahAdEva_shiva_shambhO-tanjAvUr_sankara_iyer29.mpeg.wav.pitch.frequencies"}
+   {:file "rEvati-V-Shankaranarayanan-mahAdEva_shiva_shambhO-tanjAvUr_sankara_iyer78.mpeg.wav.pitch.frequencies"}])
+
 (def kalyani-files [])
 (def pancharatna-kritis [])
