@@ -3,6 +3,7 @@
   (:require [overtone.core :as o]
             [clojure.string :as s]
             [ragavardhini.swarams :as sw]
+            [ragavardhini.scripts.util :as u]
             [ragavardhini.scripts.frequencies :as f]
             [ragavardhini.scripts.samples :as samples]))
 
@@ -22,7 +23,7 @@
        (apply merge-with +)
        (#(dissoc % nil))
        normalize-octaves
-       f/->perc-histogram))
+       u/->perc-histogram))
 
 (defn diff [base-osp sample-osp]
   (let [ordered-vals (fn [osp] (vals (sort-by first < osp)))

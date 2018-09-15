@@ -5,6 +5,7 @@
             [overtone.core :as o]
             [ragavardhini.swarams :as sw]
             [ragavardhini.scripts.dsp-adjustments :as adj]
+            [ragavardhini.scripts.util :as u]
             [ragavardhini.scripts.samples :as samples])
   (:import [java.util HashMap]))
 
@@ -15,22 +16,17 @@
   (->> (s/split (slurp (with-dir-name file)) #"\n")
        (remove #{"0"})
        (remove s/blank?)
-       (map #(Double/parseDouble %))))
+       (pmap #(Double/parseDouble %))))
 
 (defn pprint-histogram [hist]
   (pprint (sort-by second > hist)))
-
-(defn ->perc-histogram [hist]
-  (let [total (reduce + (vals hist))]
-    (m/map-vals #(* 100.0 (/ % total))
-                hist)))
 
 (defn hz->swaram [tonic-midi hz]
   (sw/midi->swaram (o/hz->midi hz) tonic-midi))
 
 (defn freqs->swarams [freqs & [prominent-note]]
   (let [tonic-midi (adj/find-tonic-midi freqs prominent-note)]
-    (map #(hz->swaram tonic-midi %) freqs)))
+    (pmap #(hz->swaram tonic-midi %) freqs)))
 
 (defn one-swaram-probabilities-for-file [file {:keys [tonic-prominence] :as opts}]
   (let [freqs (freqs-from-file file)]
@@ -43,7 +39,7 @@
        (apply merge-with +)
        (#(dissoc % nil))
        (adj/remove-non-prominent-notes npr-factor)
-       ->perc-histogram))
+       u/->perc-histogram))
 
 (defn two-swaram-freqs [freqs]
   (let [swarams (freqs->swarams freqs)]
@@ -92,7 +88,7 @@
                     (map (fn [[sw swh]] (m/map-keys (fn [ns] [sw ns]) swh)))
                     (into {}))
      :two      (->> absolute-two
-                    (m/map-vals ->perc-histogram))}))
+                    (m/map-vals u/->perc-histogram))}))
 
 (defn two-swaram->three-swaram-mapping [freqs]
   (->> (n-swaram-freqs freqs 3)
@@ -118,4 +114,4 @@
                                             (prom-sws s))))
                  (into {})
                  (m/map-vals #(select-keys % (keys one)))
-                 (m/map-vals ->perc-histogram))})))
+                 (m/map-vals u/->perc-histogram))})))
